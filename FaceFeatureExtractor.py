@@ -59,6 +59,14 @@ class FaceFeatureExtractor():
         out  = self.output_norm(out)
 
         return out
+
+    def get_dist(self, a, b):
+        sqsum = (a - b) ** 2
+        dist = 0
+        for i in sqsum:
+            dist += i
+        return np.sqrt(dist)
+        
        
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -74,10 +82,7 @@ if __name__ == '__main__':
     img2 = cv2.imread(args.img2)
     out2 = ftr_extor.extract_feature(img2)
 
-    dist = 0
-    for idx, out_v in enumerate(out1):
-        dist += (out_v - out2[idx])**2
-    dist = np.sqrt(dist)
+    dist = ftr_extor.get_dist(out1, out2)
 
     print '\n\tThe distance between', args.img1, 'and', args.img2, 'is', dist
 
